@@ -20,6 +20,9 @@ const userRoutes = require('./routes/users');
 const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 
+
+// const dbUrl ='mongodb://localhost:27017/yelp-camp';
+// const dbUrl = process.env.DB_URL ;
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
 
 mongoose.connect(dbUrl)
@@ -74,7 +77,7 @@ const sessionConfig = {
 
 app.use(session(sessionConfig));
 app.use(flash());
-app.use(helmet({contentSecurityPolicy: false}));
+
 
 
 
@@ -83,7 +86,7 @@ const scriptSrcUrls = [
     "https://kit.fontawesome.com/",
     "https://cdnjs.cloudflare.com/",
     "https://cdn.jsdelivr.net",
-    "https://cdn.maptiler.com/",
+    "https://cdn.maptiler.com",
 ];
 const styleSrcUrls = [
     "https://kit-free.fontawesome.com/",
@@ -91,12 +94,17 @@ const styleSrcUrls = [
     "https://fonts.googleapis.com/",
     "https://use.fontawesome.com/",
     "https://cdn.jsdelivr.net",
-    "https://cdn.maptiler.com/",
+    "https://cdn.maptiler.com",
 ];
 const connectSrcUrls = [
-    "https://api.maptiler.com/",
+    "https://api.maptiler.com",
+    "https://events.maptiler.com",
 ];
-const fontSrcUrls = [];
+const fontSrcUrls = [
+    "https://cdn.maptiler.com",
+    "https://fonts.gstatic.com"
+];
+
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
@@ -112,9 +120,10 @@ app.use(
                 "data:",
                 "https://res.cloudinary.com/dsh4zi6fu/",
                 "https://images.unsplash.com/",
-                "https://api.maptiler.com/",
+                "https://api.maptiler.com",
+                "https://cdn.maptiler.com",
             ],
-            fontSrc: ["'self'", ...fontSrcUrls],
+            fontSrc: ["'self'", ...fontSrcUrls, "data:"], 
         },
     })
 );
